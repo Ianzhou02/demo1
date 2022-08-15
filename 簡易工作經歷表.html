@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡易工作經歷表</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="container my-3 bg-warning bg-opacity-25" id="app" >
+        <div class="row text-center">
+            <h2 class="pt-3">簡易工作經歷表</h2>
+        </div>
+        <hr>
+        <div class="row g-2">
+            <div class="col-md-4" v-for="(job,index) in works" :key="job.id">
+                <div class="card bg-danger bg-opacity-10 h-100">
+                    <div class="card-header text-center">
+                        <h3 class="card-title">{{job.title}}</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-subtitle">{{job.place}}</h5>
+                        <hr>
+                        <p>
+                            {{job.description}}
+                        </p>
+                    </div>
+                    <div class="card-footer text-center">
+                        {{job.startYear}}年{{job.startMonth}}月到{{job.endYear}}年{{job.endMonth}}月
+                        <button class="btn btn-sm btn-danger me-1" @click="deleteJob(index)">刪除</button>
+                        <button class="btn btn-sm btn-danger me-1" @click="alterJob(job)">修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-danger mt-2" @click="show = true">新增</button>
+                <hr>
+                <div class="bg-warning bg-opacity-25 rounded-2 p-3 mb-2" v-if="show">
+                    <label class="form-label" for="title">職稱</label>
+                    <input type="text" id="title" class="form-control" v-model="temp.title">
+                    <hr>
+                    <label class="form-label" for="place">地點</label>
+                    <input type="text" id="place" class="form-control" v-model="temp.place">
+                    <hr>
+                    <label for="description" class="form-label">描述</label>
+                    <textarea id="description" cols="30" rows="10" class="form-control" v-model="temp.description"></textarea>
+                    <hr>
+                    工作時間：<input type="number" size="2" v-model.number="temp.startYear" min="1980">年<input type="number" size="2" v-model.number="temp.startMonth" max="12" min="1">月 到 <input type="number" size="2" v-model.number="temp.endYear" min="1980">年<input type="number" size="2" v-model.number="temp.endMonth" max="12" min="1">月
+                    <hr>
+                    <button class="btn btn-warning" @click="confirmJob">確認</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/vue@3"></script>
+<script>
+    const app = Vue.createApp({
+        data(){
+            return{
+                works:[
+                    {
+                        title:"課輔老師",
+                        place:"格蘭英語新店分校",
+                        description:"課輔老師的工作項目主要是協助小學生完成學校作業及大考前複習，主要教授科目為國語和數學。",
+                        startYear:2021,
+                        startMonth:9,
+                        endYear:2022,
+                        endMonth:8,
+                        id:0
+                    },
+                    {
+                        title:"程式部高級專員",
+                        place:"萊爾富國際股份有限公司",
+                        description:"程式部高級專員的部分者要負責公司內部店管、物流系統的開發和維護。",
+                        startYear:2021,
+                        startMonth:5,
+                        endYear:2021,
+                        endMonth:8,
+                        id:3
+                    },
+                ],
+                temp:{
+                    title:"",
+                    place:"",
+                    description:"",
+                    startYear:2000,
+                    startMonth:1,
+                    endYear:2000,
+                    endMonth:1
+                },
+                show:false,
+            }
+        },
+        methods:{
+            deleteJob(id){
+                this.works.splice(id,1);
+            },
+            confirmJob(){
+                if(!this.temp.id){
+                    var obj = {};
+                    obj = this.temp;
+                    obj.id = new Date().getTime();
+                    this.works.push(obj);
+                    this.temp = {};
+                    this.show=false;
+                }else{
+                    this.works.forEach((item,index)=>{
+                        if(item.id === this.temp.id){
+                            this.works[index] =this.temp; 
+                        }
+                    });
+                    this.temp = {};
+                    this.show=false;
+                }
+            },
+            alterJob(item){
+                this.show = true;
+                this.temp = {...item};
+            }
+        }
+    });
+    app.mount("#app");
+</script>
+</body>
+</html>
