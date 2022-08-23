@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>axios表單</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <style>
+        body{
+            margin-top: 70px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-warning fixed-top">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+                </svg>
+                會員系統
+            </a>
+            <button type="button" class="navbar-toggler navbar-toggler-icon" data-bs-toggle="collapse" data-bs-target="#links"></button>
+            <div class="collapse navbar-collapse" id="links">
+                <nav class="navbar-nav">
+                    <a href="#" class="nav-link">首頁</a>
+                    <a href="#" class="nav-link">會員</a>
+                    <a href="#" class="nav-link">關於</a>
+                </nav>
+            </div>
+        </div>
+    </nav>
+    <div class="container bg-warning bg-opacity-10">
+        <div class="row ">
+            <div class="col-md-6">
+                <div id="form1" class="bg-warning bg-opacity-25 p-3 m-2 rounded-3">
+                    <label class="form-label" for="">請輸入Email</label>
+                    <input type="email" name="" id="em1" class="form-control">
+                    <span class="form-text">請輸入正確Email格式</span>
+                    <hr>
+                    <label class="form-label" for="">請輸入密碼</label>
+                    <input type="password" name="" id="pw1" class="form-control">
+                    <span class="form-text">密碼為英文字母及數字組合</span>
+                    <hr>
+                    <button type="button" class="btn btn-outline-warning" id="register">註冊</button>
+                    <span class="text-danger" id="mss1"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="form2" class="bg-warning bg-opacity-25 p-3 m-2 rounded-3">
+                    <label class="form-label" for="">請輸入Email</label>
+                    <input type="email" name="" id="em2" class="form-control">
+                    <span class="form-text">請輸入正確Email格式</span>
+                    <hr>
+                    <label class="form-label" for="">請輸入密碼</label>
+                    <input type="password" name="" id="pw2" class="form-control">
+                    <br>
+                    <hr>
+                    <button type="button" class="btn btn-outline-warning" id="signin">登入</button>
+                    <span class="text-danger" id="mss2"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //註冊
+    $("#register").on("click",function(e){
+        let obj1 ={};
+        obj1.email = $("#em1").val();
+        obj1.password = $("#pw1").val();
+        //console.log(obj1);
+        axios.post("https://hexschool-tutorial.herokuapp.com/api/signup",obj1)
+        .then(function(res){
+            $("#mss1").text(res.data["message"]);
+            $("#em1").val("");
+            $("#pw1").val("");
+        }).catch(function(error){
+            $("#mss1").text(error.message);
+            $("#em1").val("");
+            $("#pw1").val("");
+        });
+    });
+
+    //登入
+    $("#signin").click(function(e){
+        let obj2={};
+        obj2.email = $("#em2").val();
+        obj2.password = $("#pw2").val();
+        //console.log(obj2);
+        axios.post("https://hexschool-tutorial.herokuapp.com/api/signin",obj2)
+        .then(function(res){
+            $("#mss2").text(res.data["message"]);
+            $("#em2").val("");
+            $("#pw2").val("");
+        }).catch(function(error){
+            $("#mss2").text(error.message);
+            $("#em2").val("");
+            $("#pw2").val("");
+        })
+    })
+</script>
+</body>
+</html>
